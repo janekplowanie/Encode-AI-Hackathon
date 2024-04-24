@@ -1,3 +1,6 @@
 *.mp4
 # *.png
-*.pyc
+*.env
+*__pycache__/
+*.idea/
+*.ipynb_checkpoints/

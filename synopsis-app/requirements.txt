@@ -1,5 +1,0 @@
-ebooklib
-bs4
-openai
-python-dotenv
-moviepy
