@@ -4,4 +4,7 @@ openai
 python-dotenv
 moviepy
 requests
-base64
+streamlit
+jupyter
+beautifulsoup4
+pillow

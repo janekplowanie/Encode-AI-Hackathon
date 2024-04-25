@@ -1,9 +1,12 @@
 import streamlit as st
-from chapter_summary import *
 from sd_functions import *
 from dotenv import load_dotenv
 import tempfile
 from moviepy.editor import VideoFileClip, concatenate_videoclips
+
+import sys
+sys.path.append('Program/SRC/summarise-chapters/chapter_summary.py')
+from chapter_summary import *
 
 
 def main():

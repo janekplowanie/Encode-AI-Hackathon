@@ -2,13 +2,19 @@ import requests
 import os
 import base64
 from PIL import Image
+from dotenv import load_dotenv
+from requests.exceptions import HTTPError
 
 
-def generate_image_from_text(api_key, text_prompts, output_directory, book_name):
+def generate_image_from_text(text_prompts, output_directory, book_name):
+    load_dotenv()
+
+    api_key = os.getenv("STABILITY_API_KEY")
 
     url = "https://api.stability.ai/v1/generation/stable-diffusion-xl-1024-v1-0/text-to-image"
 
-    body = {
+    # Swapped body for data
+    data = {
         "steps": 40,
         "width": 1024,
         "height": 1024,
@@ -21,11 +27,11 @@ def generate_image_from_text(api_key, text_prompts, output_directory, book_name)
 
     headers = {
         "Accept": "application/json",
-        "Content-Type": "application/json",
+        # "Content-Type": "application/json",
         "Authorization": f"Bearer {api_key}",
     }
 
-    response = requests.post(url, headers=headers, json=body)
+    response = requests.post(url, headers=headers, data=data)  # Can be a json=
 
     if response.status_code != 200:
         raise Exception("Non-200 response: " + str(response.text))
@@ -42,9 +48,9 @@ def generate_image_from_text(api_key, text_prompts, output_directory, book_name)
 
     return image_path
 
-#%%
-def resize_image(input_path, width = 768 , height = 768):
 
+#%%
+def resize_image(input_path, width=768, height=768):
     # Load the image
     img = Image.open(input_path)
 
@@ -53,9 +59,10 @@ def resize_image(input_path, width = 768 , height = 768):
 
     # Save the resized image
     img_resized.save(input_path)
+
+
 #%%
 def get_generation_id(api_key, image_path):
-
     url = "https://api.stability.ai/v2alpha/generation/image-to-video"
 
     headers = {"authorization": f"Bearer {api_key}"}
@@ -77,9 +84,10 @@ def get_generation_id(api_key, image_path):
     else:
         print(f"Error: {response.status_code} - {response.text}")
         return None
+
+
 #%%
 def download_generated_video(api_key, generation_id, output_path):
-
     url = f"https://api.stability.ai/v2alpha/generation/image-to-video/result/{generation_id}"
 
     headers = {
@@ -97,9 +105,10 @@ def download_generated_video(api_key, generation_id, output_path):
             file.write(response.content)
     else:
         raise Exception(str(response.json()))
+
+
 #%%
 def generate_and_download_video(api_key, image_path):
-
     image_name = os.path.basename(image_path)
     output_path = f"Videos/{image_name}.mp4"
     generation_id = get_generation_id(api_key, image_path)
