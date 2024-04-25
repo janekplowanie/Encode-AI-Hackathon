@@ -1,4 +1,3 @@
-import base64
 import requests
 import os
 from PIL import Image
@@ -7,12 +6,12 @@ import time
 
 
 #%%
-def generate_image_from_text(text_prompts, output_path_images):
+def generate_image_from_text(api_key, text_prompts, output_path_images):
     url = f"https://api.stability.ai/v2beta/stable-image/generate/core"
 
     headers = {
         "authorization": f"Bearer {api_key}",
-        "accept": "image/*"  #  "application/json"
+        "accept": "image/*"  # "application/json"
     }
 
     body = {
@@ -23,7 +22,7 @@ def generate_image_from_text(text_prompts, output_path_images):
 
     response = requests.post(url, headers=headers, files={"none": ''}, data=body, )
 
-    #image_path = os.path.join(output_directory, f'{book_name}.png')
+    # image_path = os.path.join(output_directory, f'{book_name}.png')
 
     file_name_path = f"{output_path_images}Trial_Image.png"
 
@@ -51,8 +50,7 @@ def resize_image(input_path, width=768, height=768):
 #%%
 def get_generation_id(api_key, image_path, cfg_scale, motion_bucket_id):
     """
-    cfg_scale [1, 10]: How strongly the video sticks to the original image.
-    Use lower values to allow the model more freedom to make changes and higher values to correct motion distortions.
+    cfg_scale [1, 10]: How strongly the video sticks to the original image. Use lower values to allow the model more freedom to make changes and higher values to correct motion distortions.
 
     motion_bucket_id [1, 255]: Lower values generally result in less motion in the output video, while higher values generally result in more motion.
     """
@@ -108,13 +106,11 @@ def download_generated_video(api_key, generation_id, output_path_video, retries=
 
 def generate_and_download_video(text_prompts, book_name, cfg_scale, motion_bucket_id):
     """
-    Generate image and animate it via Stability AI API.
+    Generate an image and animate it via Stability AI API.
     Creates folder "book_name" with "book_name/Images" and "book_name/Videos".
     Stores created images and animation to corresponding folders.
 
-    :param api_key: Stability AI API key
-
-    :param text_prompts: Text to generate image from (e.g text_prompts = [ prompt_1, prompt_2, ...])
+    :param text_prompts: Text to generate image from (e.g. text_prompts = [ prompt_1, prompt_2, ...])
 
     :param book_name: Book name (e.g. book_name = "Harry")
 
@@ -122,6 +118,10 @@ def generate_and_download_video(text_prompts, book_name, cfg_scale, motion_bucke
     Use lower values to allow the model more freedom to make changes and higher values to correct motion distortions.
 
     :param motion_bucket_id: [1, 255] Lower values generally result in less motion in the output video, while higher values generally result in more motion.
+
+    Note:
+    -----
+    - Make sure to create .env file in the main directory where you create a string variable "API_KEY" with your actual Stability AI API key.
     """
 
     if not os.path.isfile(".env"):
@@ -141,7 +141,7 @@ def generate_and_download_video(text_prompts, book_name, cfg_scale, motion_bucke
     output_path_video = f"{book_name}/Video/"
     os.makedirs(output_path_video, exist_ok=True)
 
-    image_name = generate_image_from_text(text_prompts, output_path_images)
+    image_name = generate_image_from_text(api_key, text_prompts, output_path_images)
 
     resize_image(image_name, width=768, height=768)
 
