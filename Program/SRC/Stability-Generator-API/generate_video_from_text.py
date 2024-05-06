@@ -130,8 +130,8 @@ def generate_and_download_video(text_prompts, book_name, cfg_scale, motion_bucke
 
     load_dotenv()
 
-    if "API_KEY" not in os.environ:
-        raise ValueError("No API_KEY found. Please add your Stability AI API KEY to your .env file")
+    if "STABILITY_API_KEY" not in os.environ:
+        raise ValueError("No STABILITY_API_KEY found. Please add your STABILITY_API_KEY to your .env file")
 
     api_key = os.getenv("STABILITY_API_KEY")
 
