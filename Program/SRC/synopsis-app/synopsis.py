@@ -5,13 +5,13 @@ import tempfile
 from moviepy.editor import VideoFileClip, concatenate_videoclips
 
 import sys
-sys.path.append('Program/SRC/summarise-chapters/chapter_summary.py')
+sys.path.append('Encode-AI-Hackathon/Program/SRC/summarise-chapters/chapter_summary.py')
 from chapter_summary import *
 
 
 def main():
 
-    load_dotenv()  # TODO Add an absolute path to 1 single .env file
+    load_dotenv("Encode-AI-Hackathon/.env")  # TODO Add an absolute path to 1 single .env file
 
     sd_api_key = os.getenv("API_KEY")
     #sd_api_key = "sk-bkuIqt0pQzG17G7H3q8phhkvYLBkUK3S7z4vqMfLtCdEjkDJ"

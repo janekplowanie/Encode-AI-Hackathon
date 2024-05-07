@@ -1,13 +1,12 @@
-from openai import OpenAI
 from Splite_book import *
 from openai import OpenAI
 
 
 class ChaptersSummaryAI:
-    """Make summary for book by chapters with ChatGPT API.
+    """Make summary for the book by chapters with ChatGPT API.
 
     Attributes:
-        book_file        Path to book of pdf format (e.g. "book.pdf")
+        book_file        Path to the book of pdf format (e.g. "book.pdf")
         chapters_pages   Pages of chapters [(start_page, end_page)] (e.g. [(1,7),(8,13),(14,18)])
         key              OpenAI Key for access to ChatGPT API (requires positive balance for API usage)
     """
