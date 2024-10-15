@@ -1,0 +1,10 @@
+ebooklib
+bs4
+openai
+python-dotenv
+moviepy
+requests
+streamlit
+jupyter
+beautifulsoup4
+pillow

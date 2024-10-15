@@ -1,0 +1,14 @@
+*.mp4
+*.png
+*.env
+*__pycache__/
+*.idea/
+*.ipynb_checkpoints/
+*.DS_Store
+main_function.py
+Test_*
+script1.ipynb
+input_book/
+output_image_video/
+**/.DS_Store
+*.json
