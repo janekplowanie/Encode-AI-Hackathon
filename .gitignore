@@ -11,5 +11,4 @@ script1.ipynb
 input_book/
 output_image_video/
 **/.DS_Store
-
-
+*.json
