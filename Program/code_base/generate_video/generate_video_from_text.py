@@ -1,9 +1,8 @@
 import requests
-import os
 from PIL import Image
-from dotenv import load_dotenv
 import time
-
+import os
+from dotenv import load_dotenv
 
 #%%
 def generate_image_from_text(api_key, text_prompts, output_path_images, image_name):
@@ -75,6 +74,16 @@ def get_generation_id(api_key, image_path, cfg_scale, motion_bucket_id):
 #%%
 
 def download_generated_video(api_key, generation_id, output_path_video, video_name, retries=6, wait_time=10):
+
+    """
+    :param api_key:
+    :param generation_id:
+    :param output_path_video:
+    :param video_name:
+    :param retries:
+    :param wait_time: Should be around 30 seconds
+    :return:
+    """
     url = f"https://api.stability.ai/v2beta/image-to-video/result/{generation_id}"
 
     headers = {
@@ -104,7 +113,7 @@ def download_generated_video(api_key, generation_id, output_path_video, video_na
 
 #%%
 
-def generate_and_download_video(stability_api_key, text_prompts, output_path_images, output_path_video, image_name, video_name, cfg_scale, motion_bucket_id):
+def generate_and_download_video(stability_api_key: str, text_prompts: str, book_name: str, output_path_images: str, output_path_video:str, cfg_scale: float, motion_bucket_id: float) -> None:
     """
     Generate an image and animate it via Stability AI API.
     Creates folder "book_name" with "book_name/Images" and "book_name/Videos".
@@ -113,31 +122,31 @@ def generate_and_download_video(stability_api_key, text_prompts, output_path_ima
     :param stability_api_key: Stability AI API key
     :param text_prompts: Text to generate image from (e.g. text_prompts = [ prompt_1, prompt_2, ...])
 
-    :param output_path_images: Output path for the generated images.
-    :param output_path_video: Output path for the generated video.
+    :param book_name:
+
+    :param output_path_video:
+    :param output_path_images:
 
     :param cfg_scale: [1, 10] How strongly the video sticks to the original image.
     Use lower values to allow the model more freedom to make changes and higher values to correct motion distortions.
 
-    :param motion_bucket_id: [1, 255] Lower values generally result in less motion in the output video, while higher values generally result in more motion.
+    :param motion_bucket_id: [1, 255] Lower values generally result in less motion in the output video, while higher
+    values generally result in more motion.
 
-    Note:
-    -----
-    - Make sure to create .env file in the main directory where you create a string variable "API_KEY" with your actual Stability AI API key.
+    Note: ----- - Make sure to create .env file in the main directory where you create a string variable "API_KEY"
+    with your actual Stability AI API key.
     """
-
-    # output_path_images = f"{book_name}/Images/"
+    #
     # os.makedirs(output_path_images, exist_ok=True)
     #
-    # output_path_video = f"{book_name}/Video/"
     # os.makedirs(output_path_video, exist_ok=True)
 
-    image_name = generate_image_from_text(stability_api_key, text_prompts, output_path_images, image_name)
+    image_name = generate_image_from_text(stability_api_key, text_prompts, output_path_images, book_name)
 
     resize_image(image_name, width=768, height=768)
 
     video_id = get_generation_id(stability_api_key, image_name, cfg_scale, motion_bucket_id)
 
-    download_generated_video(stability_api_key, video_id, output_path_video, video_name)
+    download_generated_video(stability_api_key, video_id, output_path_video, book_name)
 
 #%%
